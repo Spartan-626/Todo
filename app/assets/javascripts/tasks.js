@@ -6,7 +6,9 @@ $(function() {
     var checkedStatus = task.done ? "checked" : "";
     var liClass = task.done ? "completed" : "";
     var liElement =
-      '<li class="' +
+      '<li id="listItem-' +
+      task.id +
+      '" class="' +
       liClass +
       '">' +
       '<div class="view"><input class="toggle" type="checkbox"' +
@@ -35,6 +37,11 @@ $(function() {
       task: {
         done: doneValue
       }
+    }).success(function(data) {
+      var liHtml = taskHtml(data);
+      var $li = $("#listItem-" + data.id);
+      $li.replaceWith(liHtml);
+      $(".toggle").change(toggleTask);
     });
   }
 
@@ -63,7 +70,6 @@ $(function() {
       var ulTodos = $(".todo-list");
       ulTodos.append(htmlString);
       $(".toggle").click(toggleTask);
-      $(".new-todo").val("");
     });
   });
 });
